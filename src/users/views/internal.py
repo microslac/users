@@ -14,7 +14,9 @@ class InternalViewSet(BaseViewSet):
     @post(url_path="create")
     def create_(self, request):
         data = request.data.copy()
+        print(data)
         serializer = UserCreateSerializer(data=data)
+        print(serializer.is_valid(raise_exception=False))
         if serializer.is_valid(raise_exception=True):
             validated_data: dict = serializer.validated_data
             auth_id, team_id, email = serializer.extract("auth", "team", "email")

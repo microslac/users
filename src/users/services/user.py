@@ -35,7 +35,7 @@ class UserService(BaseService):
 
     @classmethod
     def prepare_avatar(
-        cls, team_id: str, user_id: str, image: InMemoryUploadedFile, return_temp: bool = False, **kwargs
+            cls, team_id: str, user_id: str, image: InMemoryUploadedFile, return_temp: bool = False, **kwargs
     ):
         import hashlib
         from datetime import datetime
@@ -45,7 +45,12 @@ class UserService(BaseService):
         region = settings.AWS_REGION_NAME
         bucket = settings.AWS_BUCKET_NAME
         s3_url = f"https://{bucket}.s3.{region}.amazonaws.com"
-        client = boto3.client("s3", region_name=region)
+        client = boto3.client(
+            "s3",
+            region_name=region,
+            aws_access_key_id=settings.AWS_BUCKET_KEY_ID,
+            aws_secret_access_key=settings.AWS_BUCKET_KEY_SECRET,
+        )
 
         user = cls.get_user(team_id, user_id)
         now_ts = datetime.utcnow().timestamp()
@@ -101,7 +106,12 @@ class UserService(BaseService):
         region = settings.AWS_REGION_NAME
         bucket = settings.AWS_BUCKET_NAME
         s3_url = f"https://{bucket}.s3.{region}.amazonaws.com"
-        client = boto3.client("s3", region_name=region)
+        client = boto3.client(
+            "s3",
+            region_name=region,
+            aws_access_key_id=settings.AWS_BUCKET_KEY_ID,
+            aws_secret_access_key=settings.AWS_BUCKET_KEY_SECRET,
+        )
 
         image_date = avatar.created.strftime("%Y-%m-%d")
         image_name = f"{avatar.team_id}-{avatar.user_id}-{avatar.temp_hash}"

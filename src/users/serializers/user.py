@@ -53,6 +53,7 @@ class UserCreateSerializer(BaseSerializer):
     auth = serializers.CharField(required=True, allow_blank=False)
     team = serializers.CharField(required=True, allow_blank=False)
     email = serializers.EmailField(required=True, allow_blank=False)
+    name = serializers.CharField(required=False, allow_blank=True, default="")
 
 
 class UserLookupSerializer(BaseSerializer):
