@@ -42,9 +42,10 @@ class UserService(BaseService):
 
         import boto3
 
+        url = settings.AWS_BUCKET_URL
         region = settings.AWS_REGION_NAME
         bucket = settings.AWS_BUCKET_NAME
-        s3_url = f"https://{bucket}.s3.{region}.amazonaws.com"
+        s3_url = url or f"https://{bucket}.s3.{region}.amazonaws.com"
         client = boto3.client(
             "s3",
             region_name=region,
@@ -103,9 +104,10 @@ class UserService(BaseService):
         seed = ":".join([team_id, user_id, str(now_ts)])
         avatar_hash = hashlib.shake_128(seed.encode()).hexdigest(6)
 
+        url = settings.AWS_BUCKET_URL
         region = settings.AWS_REGION_NAME
         bucket = settings.AWS_BUCKET_NAME
-        s3_url = f"https://{bucket}.s3.{region}.amazonaws.com"
+        s3_url = url or f"https://{bucket}.s3.{region}.amazonaws.com"
         client = boto3.client(
             "s3",
             region_name=region,
